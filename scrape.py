@@ -72,14 +72,16 @@ def getEpisodeVideoUrl(link):
 
 def getAnimeEpisodesDetails(link):
 	source = scraper.get(link)
-	soup = BeautifulSoup(source.text, 'lxml')
 
+	soup = BeautifulSoup(source.text, 'lxml')   
 	episode_links = soup.find('table')
-	dates = soup.find_all('td')
+	if episode_links is None:
+		return None 
+
+	dates = soup.find_all('td') 
 
 	def regex_date(date):
 		return re.findall('[0-9]{1,3}/[0-9]{1,}/[0-9]{1,4}', str(date))
-
 
 	dates = [regex_date(dates[i]) for i in range(1, len(dates),2)]
 	
@@ -94,7 +96,7 @@ def getAnimeEpisodesDetails(link):
 		i += 1
 		lst.append({"name": name, "url": url, "title": title, "release_date":date})
 
-	return lst[:3]
+	return lst[:2]
 
 
 def getCustomAnimeList(link):

@@ -2,14 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import scrape
 
-def parse_page_bs4(page):
-	soup = BeautifulSoup(page.text, 'lxml')
-	anime_list_episodes = soup.find(class_="bigBarContainer")
-	print(type(anime_list_episodes))
-	anime_list_episodes_items = anime_list_episodes.findall('a')
-	return anime_list_episodes_items
-
-
 def read_anime_file(filename):
 	anime_list = []
 	with open(filename) as fp:
