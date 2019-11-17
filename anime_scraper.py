@@ -1,10 +1,22 @@
 import scrape
 from utils import read_anime_file, create_url
 from datetime import datetime, date
+from twilio.rest import Client
 
-filename = "test.txt"
+credentials_file = "credentials.txt"
+filename = "anime.txt"
+
 anime_list = read_anime_file(filename)
 
+with open(credentials_file) as f:
+    line = f.readline()
+    acn_sid, auth_token = line.split()
+    line = f.readline()
+    twilio_number, my_number = line.split()
+
+client = Client(acn_sid, auth_token)
+
+message = ""
 for anime in anime_list:
     url = create_url(anime)
     episodes_metadata = scrape.getAnimeEpisodesDetails(url)
@@ -24,5 +36,5 @@ for anime in anime_list:
     today = date.today()
 
     if(latest_date == today):
-        message = f"\n{latest_episode['name']} released today!!\nURL: {latest_episode['url']}\n"
+        message += f"\n{latest_episode['name']} released today!!\nURL: {latest_episode['url']}"
         print(message)
