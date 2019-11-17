@@ -16,8 +16,8 @@ with open(credentials_file) as f:
 
 client = Client(acn_sid, auth_token)
 
-message = ""
 for anime in anime_list:
+    message = ""
     url = create_url(anime)
     episodes_metadata = scrape.getAnimeEpisodesDetails(url)
     """
@@ -36,5 +36,5 @@ for anime in anime_list:
     today = date.today()
 
     if(latest_date == today):
-        message += f"\n{latest_episode['name']} released today!!\nURL: {latest_episode['url']}"
-        print(message)
+        message = f"\n\n{latest_episode['name']} released today!!\nURL: {latest_episode['url']}"
+        client.messages.create(to=my_number, from_=twilio_number, body=str(message))
